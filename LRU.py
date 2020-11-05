@@ -1,5 +1,5 @@
 import collections
-
+import pytest
 
 class LRUCache:
 
@@ -38,21 +38,30 @@ lru.put(1,6)
 lru.put(3,8)
 lru.put(4,9)
 
+assert lru.cache == collections.OrderedDict([(1, 6), (3, 8), (4, 9)])
 print("After adding 3 key-value pairs\n", lru.cache)
 
 lru.get(3)
+assert lru.cache == collections.OrderedDict([(1, 6), (4, 9), (3, 8)])
 print("After reading 3\n", lru.cache)
 
-print("Attempting to read non-existent key\n", lru.get(2))
+res = lru.get(2)
+assert res == 'No key found!'
+print("Attempting to read non-existent key\n", res)
 
 lru.put(6, 11)
+assert lru.cache == collections.OrderedDict([(4, 9), (3, 8), (6, 11)])
 print("After adding new key\n", lru.cache)
 
 lru.delete(1)
+assert lru.cache == collections.OrderedDict([(4, 9), (3, 8), (6, 11)])
 print("After attempting to delete non existent key\n", lru.cache)
 
 lru.delete(3)
+assert lru.cache == collections.OrderedDict([(4, 9), (6, 11)])
 print("After successful delete\n", lru.cache)
 
 lru.reset()
+assert lru.cache == collections.OrderedDict()
 print("After complete reset\n", lru.cache)
+
